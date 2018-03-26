@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.bdqn.mapper.MarketUserMapper" >
+  <resultMap id="BaseResultMap" type="cn.bdqn.pojo.MarketUser" >
+    <id column="IDNO" property="idno"  />
+    <result column="USERCODE" property="usercode"  />
+    <result column="USERNAME" property="username"  />
+    <result column="USERPASSWORD" property="userpassword"  />
+    <result column="GENDER" property="gender"  />
+    <result column="BIRTHDAY" property="birthday"  />
+    <result column="PHONE" property="phone"  />
+    <result column="ADDRESS" property="address"  />
+    <result column="USERROLE" property="userrole"  />
+    <result column="CREATEDBY" property="createdby"  />
+    <result column="CREATIONDATE" property="creationdate"  />
+    <result column="MODIFYBY" property="modifyby"  />
+    <result column="MODIFYDATE" property="modifydate"  />
+  </resultMap>
+  
+  
+   <!-- 登录验证 -->
+	<select id="getAllMarketUser" parameterType="cn.bdqn.pojo.MarketUser" resultType="cn.bdqn.pojo.MarketUser">
+		SELECT * FROM MARKET_USER where usercode=#{usercode} and userpassword=#{userpassword}
+	</select>
+	
+	
+	<!-- 查询所有的用户信息 -->
+	<select id="selectUser" resultType="cn.bdqn.pojo.MarketUser">
+	    SELECT * FROM MARKET_USER s
+	    <where>
+	    <if test="username != null and username != '' ">and USERNAME like concat(concat('%',#{username}),'%') </if>
+	    <if test="roleid != null and roleid != 0 ">and USERROLE = #{roleid }</if>
+	    </where>
+	    
+	    order by s.CREATIONDATE desc
+	    
+	</select>
+	
+	
+	
+    <!-- 查询对应id的用户信息 -->
+	<select id="getUserById" parameterType="cn.bdqn.pojo.MarketUser" resultType="cn.bdqn.pojo.MarketUser">
+	    SELECT * FROM MARKET_USER where IDNO=#{idno}
+	</select>
+	
+	
+	<!-- 添加用户信息 -->
+	<insert id="addUser" parameterType="cn.bdqn.pojo.MarketUser">
+	insert into market_user
+		(USERCODE,USERNAME,USERPASSWORD,GENDER,PHONE,ADDRESS,USERROLE)
+		values
+		(#{usercode},#{username},#{userpassword},#{gender},#{phone},#{address},#{userrole})
+	</insert>
+	
+	<!-- 删除用户信息 -->
+	<delete id="deleteUserById" parameterType="cn.bdqn.pojo.MarketUser" >
+	 DELETE FROM MARKET_USER where IDNO=#{idno}
+	</delete>					
+	
+	<!-- 修改对应id的用户信息 -->
+	<update id="updateUser" parameterType="cn.bdqn.pojo.MarketUser" >
+	   update MARKET_USER 
+          SET
+		  USERNAME = #{username},
+		  GENDER = #{gender},
+		  PHONE = #{phone},
+		  ADDRESS = #{address},
+		  USERROLE = #{userrole}
+		where IDNO = #{idno} 
+	</update>
+	
+	<!-- 修改用户密码 -->
+	<update id="updateUserpassword" parameterType="cn.bdqn.pojo.MarketUser" >
+	   update MARKET_USER 
+          SET
+		  USERPASSWORD = #{userpassword}
+		where IDNO = #{idno} 
+	</update>
+	
+	<!-- 查询用户编码 -->
+    <select  id="findUserCode" resultType="int" parameterType="String">
+    select count(*) from market_user where  USERCODE=#{usercode}
+    </select>
+   
+</mapper>

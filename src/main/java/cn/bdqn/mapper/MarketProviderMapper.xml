@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.bdqn.mapper.MarketProviderMapper" >
+  <resultMap id="BaseResultMap" type="cn.bdqn.pojo.MarketProvider" >
+    <id column="IDNO" property="idno" jdbcType="DECIMAL" />
+    <result column="PROCODE" property="procode" jdbcType="VARCHAR" />
+    <result column="PRONAME" property="proname" jdbcType="VARCHAR" />
+    <result column="PRODESC" property="prodesc" jdbcType="VARCHAR" />
+    <result column="PROCONTACT" property="procontact" jdbcType="VARCHAR" />
+    <result column="PROPHONE" property="prophone" jdbcType="VARCHAR" />
+    <result column="PROADDRESS" property="proaddress" jdbcType="VARCHAR" />
+    <result column="PROFAX" property="profax" jdbcType="VARCHAR" />
+    <result column="CREATEDBY" property="createdby" jdbcType="DECIMAL" />
+    <result column="CREATIONDATE" property="creationdate" jdbcType="DATE" />
+    <result column="MODIFYDATE" property="modifydate" jdbcType="DATE" />
+    <result column="MODIFYBY" property="modifyby" jdbcType="DECIMAL" />
+  </resultMap>
+  
+<!--   查询所有供应商 -->
+  <select id="getAllProvider" resultMap="BaseResultMap">
+  
+  select * from market_provider order by idno desc
+  </select>
+  
+  
+<!--   通过id查询供应商 -->
+  <select id="getProviderById" resultMap="BaseResultMap">
+  
+  select * from market_provider where idNo = #{idno}
+  
+  </select>
+  
+<!--    供应商编码和供应商姓名模糊查询 -->
+  <select id="getProviderByCodeWithName" resultMap="BaseResultMap">
+  
+  select * from market_provider s
+  
+  <where>
+
+  <if test="procode !=null and procode !=''">
+   and  proCode like '%${procode}%'
+  </if>
+  
+  <if test="proname !=null and proname !=''">
+   and  proName like '%${proname}%'
+  </if>
+  
+  </where> 
+  
+  order by s.CREATIONDATE desc
+  
+  </select>
+  
+  
+<!--   添加供应商 -->
+  <insert id="addProvider" >
+   
+   INSERT INTO market_provider(
+  
+  proCode,
+  proName,
+  proDesc,
+  proContact,
+  proPhone,
+  proAddress,
+  proFax
+)
+VALUES
+  (
+    
+    #{marketProvider.procode},
+    #{marketProvider.proname},
+    #{marketProvider.prodesc},
+    #{marketProvider.procontact},
+    #{marketProvider.prophone},
+    #{marketProvider.proaddress},
+    #{marketProvider.profax}
+  )
+  
+  </insert>
+  
+  
+<!--   通过id删除供应商 -->
+  <delete id="deleteProvider">
+  
+  DELETE
+FROM
+  market_provider
+WHERE idNo = #{idno}
+  
+  
+  </delete>
+  
+  
+<!--   通过用户编码修改供应商信息 -->
+  <update id="updateProvider">
+  
+  
+UPDATE
+  market_provider
+SET
+  
+  <if test="proname!=null">
+  proName = #{proname},
+  </if>
+  <if test="procontact!=null">
+  proContact = #{procontact},
+  </if>
+  <if test="prophone!=null">
+  proPhone = #{prophone},
+  </if>
+  <if test="proaddress!=null">
+  proAddress = #{proaddress},
+  </if>
+  <if test="profax!=null">
+  proFax = #{profax},
+  </if>
+  <if test="prodesc!=null">
+  proDesc = #{prodesc}
+  </if>
+  
+WHERE proCode = #{procode}
+  
+  </update>
+  
+  
+<!--   查看供应商编码是否存在 -->
+<select id="findCode" parameterType="String" resultType="Integer">
+
+select count(*) from market_provider where proCode = #{procode}
+
+
+</select>
+  
+  
+</mapper>

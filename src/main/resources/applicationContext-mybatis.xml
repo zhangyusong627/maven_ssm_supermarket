@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+<import resource="applicationContext-service.xml"/>
+<import resource="applicationContext-dao.xml"/>
+<import resource="applicationContext-transaction.xml"/>
+
+	<!-- 读取数据库配置文件 -->
+	<context:property-placeholder location="classpath:database.properties" />
+	<!-- <context:property-placeholder location="classpath*:*.properties" /> -->
+
+	<!-- JNDI获取数据源(使用dbcp连接池) -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close" scope="singleton">
+		<property name="driverClassName" value="${jdbc.driver}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="maxActive" value="30" />
+		<property name="maxIdle" value="5" />
+	</bean>
+
+	<!-- 配置mybitas SqlSessionFactoryBean -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+         <!-- 		数据连接池 -->
+		<property name="dataSource" ref="dataSource" />
+		<!-- 加载mybatis的全局配置文件 -->
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
+	</bean>
+
+	<!-- 扫描mapper,会自动创建mapper代理,自动创建Mapper.java的bean, bean的id就是Mapper.java的类名首字母小写 -->
+		<!-- MapperScannerConfigurer根据mapper自动生成id，这个id是类名的首字母小写 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="cn.bdqn.mapper" />
+		<!-- value="sqlSessionFactory":注入的是 sqlSessionFactory name="sqlSessionFactoryBeanName"是将sqlSessionFactory注入到org.java.mapper包里的所有mapper里面，所以是根据sqlSessionFactoryBeanName -->
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+	</bean>
+
+
+</beans>

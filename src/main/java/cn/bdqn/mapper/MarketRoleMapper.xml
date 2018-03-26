@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.bdqn.mapper.MarketRoleMapper" >
+  <resultMap id="BaseResultMap" type="cn.bdqn.pojo.MarketRole" >
+    <id column="IDNO" property="idno" jdbcType="DECIMAL" />
+    <result column="ROLECODE" property="rolecode" jdbcType="VARCHAR" />
+    <result column="ROLENAME" property="rolename" jdbcType="VARCHAR" />
+    <result column="CREATEDBY" property="createdby" jdbcType="DECIMAL" />
+    <result column="CREATIONDATE" property="creationdate" jdbcType="DATE" />
+    <result column="MODIFYBY" property="modifyby" jdbcType="DECIMAL" />
+    <result column="MODIFYDATE" property="modifydate" jdbcType="DATE" />
+  </resultMap>
+  
+</mapper>

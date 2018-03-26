@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.bdqn.mapper.MarketBillMapper">
+	<resultMap id="BaseResultMap" type="cn.bdqn.pojo.MarketBill">
+		<id column="IDNO" property="idno" />
+		<result column="BILLCODE" property="billcode" />
+		<result column="PRODUCTNAME" property="productname" />
+		<result column="PRODUCTDESC" property="productdesc" />
+		<result column="PRODUCTUNIT" property="productunit" />
+		<result column="PRODUCTCOUNT" property="productcount" />
+		<result column="TOTALPRICE" property="totalprice" />
+		<result column="ISPAYMENT" property="ispayment" />
+		<result column="CREATEDBY" property="createdby" />
+		<result column="CREATIONDATE" property="creationdate" />
+		<result column="MODIFYBY" property="modifyby" />
+		<result column="MODIFYDATE" property="modifydate" />
+		<result column="PROVIDERID" property="providerid" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, billCode, productName, productDesc, productUnit,
+		productCount,
+		totalPrice, isPayment,
+		createdBy, creationDate, modifyBy,
+		modifyDate, providerId
+	</sql>
+
+	<!-- 查询所有订单 -->
+	<select id="getAllMarketBill" parameterType="cn.bdqn.pojo.MarketBill" resultType="cn.bdqn.pojo.MarketBill">
+	select b.*, p.proname as providername from market_bill
+    b,market_provider p where b.PROVIDERID=p.IDNO
+    order by b.CREATIONDATE desc
+	</select>
+
+
+
+
+	<!-- 通过ID查询订单 -->
+	<select id="selectBillById" resultMap="BaseResultMap">
+		select b.*, p.proname as providername 
+		from market_bill b,market_provider p where b.PROVIDERID=p.IDNO and b.IDNO=#{idno}
+		<!-- select * from market_bill where IDNO=#{idno} -->
+	</select>
+
+	<!-- 添加 订单 -->
+	<insert id="addBill" parameterType="cn.bdqn.pojo.MarketBill">
+		insert into market_bill
+		(BILLCODE,PRODUCTNAME,PRODUCTUNIT,PRODUCTCOUNT,TOTALPRICE,PROVIDERID,ISPAYMENT)
+		values
+		(#{billcode},#{productname},#{productunit},#{productcount},#{totalprice},#{providerid},#{ispayment})
+
+	</insert>
+
+	<!-- 删除订单 -->
+	<delete id="deleteBillById" parameterType="Integer">
+		delete from market_bill where IDNO=#{idno}
+	</delete>
+
+	<!-- 修改订单 -->
+	<update id="updateBill" parameterType="cn.bdqn.pojo.MarketBill">
+		update market_bill set
+		PRODUCTNAME=#{productname},
+		PRODUCTUNIT=#{productunit},
+		PRODUCTCOUNT=#{productcount},
+		TOTALPRICE=#{totalprice},
+		PROVIDERID=#{providerid},
+		ISPAYMENT=#{ispayment}
+		where BILLCODE=#{billcode}
+	</update>
+
+	<!-- 模糊查询 -->
+	<select id="getMarketBillByParements" parameterType="cn.bdqn.pojo.MarketBill" resultType="cn.bdqn.pojo.MarketBill">
+		select b.*, p.proname as providername from market_bill
+		b,market_provider p where b.PROVIDERID=p.IDNO 
+		<if test="productname != null and productname != '' ">and PRODUCTNAME like concat(concat('%',#{productname}),'%') </if>
+		<if test="providerid != null and providerid != 0 ">and PROVIDERID = #{providerid}</if>
+		<if test="ispayment != null and ispayment != 0 ">and ISPAYMENT = #{ispayment}</if>
+		order by b.CREATIONDATE desc
+	</select>
+
+
+	<!-- 查询所有供应商 -->
+	<select id="getMarketProvider" parameterType="cn.bdqn.pojo.MarketBill"
+		resultType="cn.bdqn.pojo.MarketBill">
+		select  DISTINCT p.proname as providername ,b.providerid 
+		from market_bill b ,market_provider p where b.PROVIDERID=p.IDNO
+
+	</select>
+	
+	
+    <!-- 查询订单编码 -->
+  <select  id="findBillCode" resultType="int" parameterType="String">
+  select count(*) from market_bill where  BILLCODE=#{billcode}
+  </select>
+
+
+</mapper>

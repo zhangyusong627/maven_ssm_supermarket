@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <properties>
+        <property name="dialect" value="oracle" />
+    </properties>
+
+    <settings>
+        <setting name="lazyLoadingEnabled" value="false" />
+
+        <!-- 输入mybatis日志包括sql -->
+        <setting name="logImpl" value="LOG4J" />
+
+        <!-- 开启全局二级缓存 -->
+        <setting name="cacheEnabled" value="true" />
+    </settings>
+    <typeAliases>
+        <!--这里给实体类取别名，方便在mapper配置文件中使用 -->
+        <!-- <package name="cn.bdqn.pojo"/> -->
+    </typeAliases>
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageHelper">
+            <property name="dialect" value="oracle" />
+            <property name="pageSizeZero" value="true" />
+            <property name="offsetAsPageNum" value="true" />
+            <property name="reasonable" value="true" />
+            <property name="rowBoundsWithCount" value="true" />
+        </plugin>
+    </plugins>
+    
+    
+    
+</configuration>  
