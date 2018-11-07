@@ -7,6 +7,8 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import cn.bdqn.pojo.MarketUser;
+
 public class MarketUserServiceImplTest {
 
 	private MarketUserServiceImpl userServiceImpl;
@@ -18,7 +20,13 @@ public class MarketUserServiceImplTest {
 	}
 
 	@Test
-	public void testSelectUser() {
+	public void testSelectUser() throws Exception {
+		MarketUser marketUser = new MarketUser() ;
+		marketUser.setUsercode("zhanghua");
+		marketUser.setUserpassword("0000000");
+		
+		MarketUser allMarketUser = userServiceImpl.getAllMarketUser(marketUser);
+		System.out.println(allMarketUser);
 		
 	}
 

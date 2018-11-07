@@ -20,13 +20,13 @@
   
    <!-- 登录验证 -->
 	<select id="getAllMarketUser" parameterType="cn.bdqn.pojo.MarketUser" resultType="cn.bdqn.pojo.MarketUser">
-		SELECT * FROM MARKET_USER where usercode=#{usercode} and userpassword=#{userpassword}
+		SELECT * FROM smbms_user where usercode=#{usercode} and userpassword=#{userpassword}
 	</select>
 	
 	
 	<!-- 查询所有的用户信息 -->
 	<select id="selectUser" resultType="cn.bdqn.pojo.MarketUser">
-	    SELECT * FROM MARKET_USER s
+	    SELECT * FROM smbms_user s
 	    <where>
 	    <if test="username != null and username != '' ">and USERNAME like concat(concat('%',#{username}),'%') </if>
 	    <if test="roleid != null and roleid != 0 ">and USERROLE = #{roleid }</if>
@@ -40,13 +40,13 @@
 	
     <!-- 查询对应id的用户信息 -->
 	<select id="getUserById" parameterType="cn.bdqn.pojo.MarketUser" resultType="cn.bdqn.pojo.MarketUser">
-	    SELECT * FROM MARKET_USER where IDNO=#{idno}
+	    SELECT * FROM smbms_user where IDNO=#{idno}
 	</select>
 	
 	
 	<!-- 添加用户信息 -->
 	<insert id="addUser" parameterType="cn.bdqn.pojo.MarketUser">
-	insert into market_user
+	insert into smbms_user
 		(USERCODE,USERNAME,USERPASSWORD,GENDER,PHONE,ADDRESS,USERROLE)
 		values
 		(#{usercode},#{username},#{userpassword},#{gender},#{phone},#{address},#{userrole})
@@ -54,12 +54,12 @@
 	
 	<!-- 删除用户信息 -->
 	<delete id="deleteUserById" parameterType="cn.bdqn.pojo.MarketUser" >
-	 DELETE FROM MARKET_USER where IDNO=#{idno}
+	 DELETE FROM smbms_user where IDNO=#{idno}
 	</delete>					
 	
 	<!-- 修改对应id的用户信息 -->
 	<update id="updateUser" parameterType="cn.bdqn.pojo.MarketUser" >
-	   update MARKET_USER 
+	   update smbms_user 
           SET
 		  USERNAME = #{username},
 		  GENDER = #{gender},
@@ -71,7 +71,7 @@
 	
 	<!-- 修改用户密码 -->
 	<update id="updateUserpassword" parameterType="cn.bdqn.pojo.MarketUser" >
-	   update MARKET_USER 
+	   update smbms_user 
           SET
 		  USERPASSWORD = #{userpassword}
 		where IDNO = #{idno} 
@@ -79,7 +79,7 @@
 	
 	<!-- 查询用户编码 -->
     <select  id="findUserCode" resultType="int" parameterType="String">
-    select count(*) from market_user where  USERCODE=#{usercode}
+    select count(*) from smbms_user where  USERCODE=#{usercode}
     </select>
    
 </mapper>
