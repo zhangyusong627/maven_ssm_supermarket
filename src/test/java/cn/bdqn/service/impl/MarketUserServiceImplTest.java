@@ -2,6 +2,8 @@ package cn.bdqn.service.impl;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -21,13 +23,10 @@ public class MarketUserServiceImplTest {
 
 	@Test
 	public void testSelectUser() throws Exception {
-		MarketUser marketUser = new MarketUser() ;
-		marketUser.setUsercode("zhanghua");
-		marketUser.setUserpassword("0000000");
-		
-		MarketUser allMarketUser = userServiceImpl.getAllMarketUser(marketUser);
-		System.out.println(allMarketUser);
-		
+		List<MarketUser> selectUser = userServiceImpl.selectUser(null, null);
+		for (MarketUser marketUser : selectUser) {
+			System.err.println(marketUser);
+		}
 	}
 
 }
