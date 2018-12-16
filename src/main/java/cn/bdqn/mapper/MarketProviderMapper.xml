@@ -19,21 +19,24 @@
 <!--   查询所有供应商 -->
   <select id="getAllProvider" resultMap="BaseResultMap">
   
-  select * from market_provider order by idno desc
+  <!-- select * from market_provider order by idno desc -->
+  
+   SELECT * FROM smbms_provider ORDER BY id DESC
+   
   </select>
   
   
 <!--   通过id查询供应商 -->
   <select id="getProviderById" resultMap="BaseResultMap">
   
-  select * from market_provider where idNo = #{idno}
+  select * from smbms_provider where id = #{idno}
   
   </select>
   
 <!--    供应商编码和供应商姓名模糊查询 -->
   <select id="getProviderByCodeWithName" resultMap="BaseResultMap">
   
-  select * from market_provider s
+  select * from smbms_provider s
   
   <where>
 
@@ -55,7 +58,7 @@
 <!--   添加供应商 -->
   <insert id="addProvider" >
    
-   INSERT INTO market_provider(
+   INSERT INTO smbms_provider(
   
   proCode,
   proName,
@@ -85,8 +88,8 @@ VALUES
   
   DELETE
 FROM
-  market_provider
-WHERE idNo = #{idno}
+  smbms_provider
+WHERE id = #{idno}
   
   
   </delete>
@@ -97,7 +100,7 @@ WHERE idNo = #{idno}
   
   
 UPDATE
-  market_provider
+  smbms_provider
 SET
   
   <if test="proname!=null">
@@ -127,7 +130,7 @@ WHERE proCode = #{procode}
 <!--   查看供应商编码是否存在 -->
 <select id="findCode" parameterType="String" resultType="Integer">
 
-select count(*) from market_provider where proCode = #{procode}
+select count(*) from smbms_provider where proCode = #{procode}
 
 
 </select>
